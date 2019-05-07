@@ -410,7 +410,9 @@ class AddItemFrame(tk.Frame):
         ent.grid(column=1, row=6)
         lab = ttk.Label(self, text="Add item from Category:")
         lab.grid(column=2, row=6)
-        cb = ttk.Combobox(self, textvariable=self.cat, values=[x[0] for x in list(set(db.get_categories()))],
+        lis = list(set(db.get_categories()))
+        lis.sort()
+        cb = ttk.Combobox(self, textvariable=self.cat, values=[x[0] for x in lis],
                           state='readonly')
         cb.grid(column=3, row=6, sticky='W')
         cb.bind("<<ComboboxSelected>>", self.update_item_options)
@@ -425,7 +427,9 @@ class AddItemFrame(tk.Frame):
         self.itemcb.bind("<<ComboboxSelected>>", self.update_item_id)
         lab = ttk.Label(self, text="Quality:")
         lab.grid(column=0, row=8)
-        cb = ttk.Combobox(self, textvariable=self.qual, values=[x[1] for x in db.get_quality_levels()],
+        lis2 = list(set(db.get_quality_levels()))
+        lis2.sort()
+        cb = ttk.Combobox(self, textvariable=self.qual, values=[x[1] for x in lis2],
                           state='readonly')
         cb.grid(column=1, row=8, sticky='W')
         self.qual.set("Legendary/Set")
@@ -435,7 +439,8 @@ class AddItemFrame(tk.Frame):
         sb.grid(column=0, row=21)
 
     def update_item_options(self, event=None):
-        items = db.get_items_from_category(self.cat.get())
+        items = list(set(db.get_items_from_category(self.cat.get())))
+        items.sort()
         itemcbvalues = [x[0] for x in items]
         self.itemcbgbids = [x[1] for x in items]
         self.itemcb.config(values=itemcbvalues)

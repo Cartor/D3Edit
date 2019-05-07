@@ -4,10 +4,13 @@ import tkinter as tk
 from gui import tabs
 from tkinter import filedialog
 from tkinter import ttk
+import configparser
 
 
 class D3Edit(object):
     def __init__(self):
+        self.cf = configparser.ConfigParser()
+        self.cf.read('config.ini')
         message = None
         try:
             from google import protobuf
@@ -19,7 +22,7 @@ class D3Edit(object):
         self.main_window = None
         self.style = None
         self.account = None
-        self.previous_file = None
+        self.previous_file = self.cf.get("config", 'previous_file')
         self.wcoords = None
         self.tabs = None
         self.setupframe()
@@ -52,11 +55,13 @@ class D3Edit(object):
         self.setupframe(wcoords)
 
     def openfile(self):
-        selected_file = filedialog.askopenfilename(initialdir=".", title="Select account.dat file")
+        selected_file = filedialog.askopenfilename(initialdir=self.previous_file, title="Select account.dat file")
         if selected_file:
             if self.current_file:
                 self.previous_file = self.current_file
             self.current_file = selected_file
+            self.cf.set('config', 'previous_file', selected_file)
+            self.cf.write(open("Config.ini", "w"))
             self.loadaccount(self.current_file)
 
     def loadaccount(self, file):
@@ -105,10 +110,10 @@ class D3Edit(object):
         hid = self.tabs.active_hid
         name = getattr(self.tabs.active_hero_data['Name'], 'get')
         level = getattr(self.tabs.active_hero_data['Level'], 'get')
-#        rift = getattr(self.tabs.active_hero_data['Highest Solo Rift'], 'get')
+        #        rift = getattr(self.tabs.active_hero_data['Highest Solo Rift'], 'get')
         self.account.heroes[hid].digest.hero_name = name()
         self.account.heroes[hid].digest.level = int(level())
-#        self.account.heroes[hid].digest.highest_solo_rift_completed = int(rift())
+        #        self.account.heroes[hid].digest.highest_solo_rift_completed = int(rift())
         attrs = self.account.heroes[hid].saved_attributes.attributes
         at_found = False
         for at in attrs:
