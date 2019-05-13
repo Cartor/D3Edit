@@ -3,7 +3,7 @@ import json
 import random
 import tkinter as tk
 from pb2_resources import Items_pb2
-
+import operator
 
 def gbid_get(gbid):
     try:
@@ -77,6 +77,7 @@ def decode_itemlist(itemlist):
     item_out = []
     for item in itemlist:
         item_out.append(decode_single_item(item))
+    # item_out = sorted(item_out,key=lambda k: (k['category'], k['name']))
     return item_out
 
 

@@ -380,6 +380,7 @@ class ScrollbarItems(ttk.Frame):
                 label = label.split("ID: ")[0]
             if ": " in label:
                 label = label.split(": ")[1]
+            label = item["category"]+":"+label
             listing.insert(curr_index, label)
             if (len(label)*0.75) > lswid:
                 lswid = int((len(label)*0.75))
