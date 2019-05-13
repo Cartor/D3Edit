@@ -127,7 +127,7 @@ class Notebook(ttk.Notebook):
         self.active_stash_frame = tk.Frame(self.stash_tab, bg='white')
         self.active_stash_frame.grid(column=0, row=1)
         stashvalues = ['SC - Non Season', 'HC - Non Season', 'SC - Season', 'HC - Season'] + self.heroes
-        c = ttk.Combobox(self.active_stash_frame, textvariable=self.active_stash, values=stashvalues, state='readonly')
+        c = ttk.Combobox(self.active_stash_frame, textvariable=self.active_stash, values=stashvalues, state='readonly', width=40)
         c.grid(column=0, row=0, sticky='NW')
         c.bind("<<ComboboxSelected>>", self.configure_stash_frame)
         active_stash = self.active_stash.get()
@@ -207,7 +207,7 @@ class Notebook(ttk.Notebook):
         row = 0
         v = tk.StringVar()
         v.set(self.entry['name'])
-        le = int(len(self.entry['name'])*0.9)
+        le = int(len(self.entry['name']) * 0.9)
         e = tk.Entry(self.item_frame, readonlybackground='white', fg='black', textvariable=v, bd=0, width=le,
                      state='readonly', highlightthickness=0)
         e.grid(row=row, sticky='W', columnspan=2)
@@ -242,7 +242,8 @@ class Notebook(ttk.Notebook):
                 if affix == enchanted[0][0]:
                     ttk.Label(self.item_frame, text="Enchanted").grid(column=1, row=crow, sticky='NES')
                     description = enchanted[1]
-            cb = ttk.Combobox(self.item_frame, textvariable=description, values=self.valid_values, state='readonly')
+            cb = ttk.Combobox(self.item_frame, textvariable=description, values=self.valid_values, state='readonly',
+                              width=40)
             cb.grid(row=crow, sticky='W')
             cb.bind("<<ComboboxSelected>>", lambda x: self.set_item_affixes(x, row))
             self.cbs.append(cb)
@@ -382,8 +383,8 @@ class ScrollbarItems(ttk.Frame):
                 label = label.split(": ")[1]
             label = item["category"]+":"+label
             listing.insert(curr_index, label)
-            if (len(label)*0.75) > lswid:
-                lswid = int((len(label)*0.75))
+            if (len(label) * 0.75) > lswid:
+                lswid = int((len(label) * 0.75))
             self.indexmap.append(item)
         listing.config(yscrollcommand=sb.set, height=35, width=lswid)
         self.listbox = listing
@@ -414,7 +415,7 @@ class AddItemFrame(tk.Frame):
         lis = list(set(db.get_categories()))
         lis.sort()
         cb = ttk.Combobox(self, textvariable=self.cat, values=[x[0] for x in lis],
-                          state='readonly')
+                          state='readonly', width=40)
         cb.grid(column=3, row=6, sticky='W')
         cb.bind("<<ComboboxSelected>>", self.update_item_options)
         lab = ttk.Label(self, text="Number of Affixes:")
@@ -423,7 +424,7 @@ class AddItemFrame(tk.Frame):
         ent2.grid(column=1, row=7)
         lab = ttk.Label(self, text="Specific Item:")
         lab.grid(column=2, row=7)
-        self.itemcb = ttk.Combobox(self, textvariable=self.chosenitem, values=[], state='readonly')
+        self.itemcb = ttk.Combobox(self, textvariable=self.chosenitem, values=[], state='readonly', width=40)
         self.itemcb.grid(column=3, row=7)
         self.itemcb.bind("<<ComboboxSelected>>", self.update_item_id)
         lab = ttk.Label(self, text="Quality:")
@@ -431,7 +432,7 @@ class AddItemFrame(tk.Frame):
         lis2 = list(set(db.get_quality_levels()))
         lis2.sort()
         cb = ttk.Combobox(self, textvariable=self.qual, values=[x[1] for x in lis2],
-                          state='readonly')
+                          state='readonly', width=40)
         cb.grid(column=1, row=8, sticky='W')
         self.qual.set("Legendary/Set")
         ttk.Label(self, text="Note: If there's no space in the inventory no item will be added") \
